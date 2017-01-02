@@ -5,7 +5,7 @@ void BubbleSort(int *arr, int len);
 int main()
 {
     int i;
-    int arr[] = {9, 8, 2, 1, 10};
+    int arr[] = {9, 10, 20, 0, 3};
 
     BubbleSort(arr, sizeof(arr)/sizeof(int));
     for(i=0; i<sizeof(arr)/sizeof(int); i++)
