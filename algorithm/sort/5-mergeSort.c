@@ -58,8 +58,8 @@ void MergeSort(RecType R[],int low,int high)
 
 void main()  
 {  
-    int a[7]={49,38,65,97,76,13,27}; //这里对8个元素进行排序  
-    int low=0,high=6;                   //初始化low和high的值  
+    int a[] = {9, 10, 20, 0, 3};
+    int low=0,high=4;                   //初始化low和high的值  
     int i;
 
     printf("Before merge sort: ");  
