@@ -32,7 +32,6 @@ void QuickSort(int *s, int left, int right)
 	s[i] = x;
 	QuickSort(s, left, i-1);
 	QuickSort(s, i+1, right);
-
     }
 }
 
