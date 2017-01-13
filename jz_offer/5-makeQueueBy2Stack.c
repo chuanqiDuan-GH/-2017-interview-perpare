@@ -39,7 +39,10 @@ pStack CreateStack()
 void PushStack(pStack root, int value)
 {
     if(NULL == root || root->topPos == STACKLEN)
+    {
+	printf("stack full\n");    
 	return;
+    }
 
     root->seqStack[(root->topPos)++] = value;
 }
@@ -75,7 +78,7 @@ void DeleteHead()
     {
 	if(stack1->topPos == 0)
 	{
-	   printf("empty stack\n"); 
+	   printf("stack empty\n"); 
 	   return;
 	}
 
@@ -100,9 +103,25 @@ int main()
     AppendTail(100);
     AppendTail(200);
     AppendTail(300);
+    AppendTail(300);
+    AppendTail(300);
+    AppendTail(300);
+    AppendTail(300);
+    AppendTail(300);
+    AppendTail(300);
+    AppendTail(300);
+    AppendTail(300);	//stack1满了
     DeleteHead();
     DeleteHead();
     AppendTail(400);
+    DeleteHead();
+    DeleteHead();
+    DeleteHead();
+    DeleteHead();
+    DeleteHead();
+    DeleteHead();
+    DeleteHead();   //stack1和stack2都空了
+    DeleteHead();
     DeleteHead();
     DeleteHead();
 
