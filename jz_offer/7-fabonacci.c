@@ -9,12 +9,15 @@
 ********************************************************/
 #include <stdio.h>
 
-#if 0
+#if 1
 /*从顶层到底层*/
 unsigned int FabonacciTop2Bottom(unsigned int n)
 {
-    if(n <3)
-	return n;
+    if((n-1) <= 0)
+	return 0;
+
+    if((n-1) == 1)
+	return 1;
 
     return FabonacciTop2Bottom(n-1) + FabonacciTop2Bottom(n-2);
 }
@@ -46,7 +49,8 @@ unsigned int FabonacciBottom2Top(unsigned int n)
 /*fabonacci第n项*/
 int main()
 {
-    int n = 4;
-    //printf("%d\n", FabonacciTop2Bottom(n));
+    /*fabonacci数列前9项: 0, 1, 1, 2, 3, 5, 8, 13, 21*/
+    int n = 9;
+    printf("%d\n", FabonacciTop2Bottom(n));
     printf("%d\n", FabonacciBottom2Top(n));
 }
