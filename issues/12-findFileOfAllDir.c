@@ -35,6 +35,7 @@ void Traverse(char *sourceFilePath)
 	    Traverse(ptr->d_name);
 	}
     }
+    closedir(dir);
 }
 
 void main(int argc, char *argv[])
