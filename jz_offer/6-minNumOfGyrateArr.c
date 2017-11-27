@@ -9,6 +9,20 @@
  ********************************************************/
 #include <stdio.h>
 
+/*特殊情况遍历所有找最小*/
+void ergodicFind(int *arr, int len)
+{
+    int min = *arr;
+    int i = 0;
+    while(i < len)
+    {
+	if(*(arr+i) < min)
+	    min = *(arr+i);
+	i++;
+    }
+    printf("min num: %d\n", min);
+}
+
 /*普通情况处理*/
 void findMinNumOfGyrateArr(int *arr, int len)
 {
@@ -24,7 +38,11 @@ void findMinNumOfGyrateArr(int *arr, int len)
 
     while(posFront < posRear-1)
     {
-	//printf("%d %d %d \n", arr[posFront], arr[posMid], arr[posRear]);
+	if(arr[posFront] == arr[posRear] == arr[posMid])
+	{
+	    ergodicFind(arr, len);
+	    return;
+	} 
 	if(arr[posFront] < arr[posMid])
 	    posFront = posMid;	
 	else
@@ -32,16 +50,18 @@ void findMinNumOfGyrateArr(int *arr, int len)
 
 	posMid = (posRear-posFront)/2 + posFront;
     }
-
     printf("min num: %d\n", arr[posRear]);
 }
 
 int main()
 {
-    /*普通情况*/
-    int arr[7] = {4, 5, 6, 7, 1, 2, 3};
-    int len = sizeof(arr)/sizeof(int);
+    //普通情况
+    //int arr[7] = {4, 5, 6, 7, 1, 2, 3};
 
+    //特殊情况
+    int arr[7] = {1, 1, 1, 1, 1, 0, 1};
+    
+    int len = sizeof(arr)/sizeof(int);
     findMinNumOfGyrateArr(arr, len);
     return 0;
 }

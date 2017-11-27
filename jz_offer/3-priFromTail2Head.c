@@ -14,32 +14,32 @@ typedef struct ListNode
 {
     int value;
     struct ListNode *pNext;
-}Node, *pNode;
+} Node, *pNode;
 
 void PriListFromTail2Head(pNode head)
 {
     pNode tmp = head;
-    if(tmp)
+    if (tmp)
     {
-	PriListFromTail2Head(tmp->pNext);	 
-	printf("%d ", tmp->value);
+        PriListFromTail2Head(tmp->pNext);
+        printf("%d ", tmp->value);
     }
 }
 
 pNode CreateList(pNode head, int value)
 {
-    if(NULL == head)
+    if (NULL == head)
     {
-	head = (pNode)malloc(sizeof(Node));
-	head->pNext = NULL;
-	head->value = 0;
+        head = (pNode)malloc(sizeof(Node));
+        head->pNext = NULL;
+        head->value = 0;
     }
     else
     {
-	pNode node = (pNode)malloc(sizeof(Node));
-	node->value = value;
-	node->pNext = head->pNext;
-	head->pNext = node;
+        pNode node = (pNode)malloc(sizeof(Node));
+        node->value = value;
+        node->pNext = head->pNext;
+        head->pNext = node;
     }
     return head;
 }
@@ -49,19 +49,18 @@ int main()
     pNode head = NULL;
     int i = 5;
 
-    while(i >= 1)
-	head = CreateList(head, i--); 
+    while (i >= 1)
+        head = CreateList(head, i--);
 
     pNode tmp = head;
     /*正序输出*/
-    while(tmp)
+    while (tmp)
     {
-	printf("%d ", tmp->value); 
-	tmp = tmp->pNext;
+        printf("%d ", tmp->value);
+        tmp = tmp->pNext;
     }
     printf("\n");
 
     /*逆序输出*/
     PriListFromTail2Head(head);
-    
 }
