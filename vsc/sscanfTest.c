@@ -12,36 +12,41 @@
 
 void func()
 {
-    //char str[128] = "HOME,100; right,200; left,300; home,400; sleep,1200000;";
+    
+#ifdef CONDITION_A
+    char str[128] = "HOME,100; right,200; left,300; home,400; sleep,1200000;";
+#else
     char str[128] = "HOME,100;right,200;left,300;home,400;sleep,1200000;";
+#endif
+
     char cmd[16] = "0";
     int delay = 0;
     char *tmp = str;
 
+#ifdef CONDITION_A
 //处理有空格的字符串
-#if 0
+    printf("C_A\n");
     while(NULL != tmp)
     {
-	sscanf(tmp, "%[^,],%d", cmd, &delay);
-    	printf("%s\n", cmd);
-    	printf("%d\n", delay);
-	tmp = strstr(tmp, " ");
-	if(NULL == tmp++)
-	    break;
+        sscanf(tmp, "%[^,],%d[^;]", cmd, &delay);
+        printf("%s\n", cmd);
+        printf("%d\n", delay);
+        tmp = strstr(tmp, " ");
+        if(tmp++ == NULL)
+            break;
     }
-#endif
-
+#else
 //处理没有空格的字符串
     while(NULL != tmp)
     {
-	sscanf(tmp, "%[^,],%d", cmd, &delay);
-    	printf("%s\n", cmd);
-    	printf("%d\n", delay);
-	tmp = strchr(tmp, ';');
-	if(NULL == tmp++)
-	    break;
+        sscanf(tmp, "%[^,],%d", cmd, &delay);
+        printf("%s\n", cmd);
+        printf("%d\n", delay);
+        tmp = strchr(tmp, ';');
+        if(0 == *(++tmp))
+            break;
     }
-
+#endif
 }
 
 int main()
