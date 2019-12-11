@@ -27,13 +27,13 @@ int top = STACKSIZE;
 void Push(char symbol)
 {
     top--;
-    stack[top] = symbol; 
+    stack[top] = symbol;
 }
 
 //出栈
 char Pop()
 {
-    char tmp = stack[top]; 
+    char tmp = stack[top];
     top++;
 
     return tmp;
@@ -42,37 +42,37 @@ char Pop()
 //匹配检验
 int IsMatching(char *str)
 {
-    if(NULL == str)
-	return 0;
+    if (NULL == str)
+        return 0;
 
     int i = 0;
     char tmp = '0';
 
-    while(str[i])
+    while (str[i])
     {
-	if(str[i] == '(' || str[i] == '{' || str[i] == '[')
-	    Push(str[i++]); 
-	else if(str[i] == ')' || str[i] == '}' || str[i] == ']')
-	{
+        if (str[i] == '(' || str[i] == '{' || str[i] == '[')
+            Push(str[i++]);
+        else if (str[i] == ')' || str[i] == '}' || str[i] == ']')
+        {
 #ifdef RULE1
-	    tmp = Pop();	    
-	    //printf("%c\n", tmp);
-	    i++;
-	    if(tmp == '(' || tmp == '{' || tmp == '[')
-		continue;
+            tmp = Pop();
+            //printf("%c\n", tmp);
+            i++;
+            if (tmp == '(' || tmp == '{' || tmp == '[')
+                continue;
 #endif
 
 #ifdef RULE2
-	    tmp = Pop();
-	    if(str[i] == ')' && tmp == '(')
-		continue;
-	    else if(str[i] == '}' && tmp == '{')
-		continue;
-	    else if(str[i] == ']' && tmp == '[')
-		continue;
+            tmp = Pop();
+            if (str[i] == ')' && tmp == '(')
+                continue;
+            else if (str[i] == '}' && tmp == '{')
+                continue;
+            else if (str[i] == ']' && tmp == '[')
+                continue;
 #endif
-	    return 0;
-	}
+            return 0;
+        }
     }
     return 1;
 }
@@ -81,10 +81,10 @@ int main()
 {
     char str[10] = "{([)]}";
 
-    if(IsMatching(str))
+    if (IsMatching(str))
     {
-	printf("match\n");
-	goto exit;
+        printf("match\n");
+        goto exit;
     }
 
     printf("not match\n");

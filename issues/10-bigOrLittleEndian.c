@@ -9,20 +9,19 @@
  ********************************************************/
 #include <stdio.h>
 
-union temp
-{
+union temp {
     short int a;
     char b;
-}temp;
+} temp;
 
 int WhichEndian()
 {
-    short int a = 0x1122;//十六进制，一个数值占4位
-    char b = *(char *)&a;//通过将short(2字节)强制类型转换成char单字节，b指向的起始字节(低字节)
-    if(b == 0x11)//低字节存的是数据的高字节数据
-	return 1;//大端模式    
+    short int a = 0x1122; //十六进制，一个数值占4位
+    char b = *(char *)&a; //通过将short(2字节)强制类型转换成char单字节，b指向的起始字节(低字节)
+    if (b == 0x11)        //低字节存的是数据的高字节数据
+        return 1;         //大端模式
     else
-	return 0;//小端模式
+        return 0; //小端模式
 }
 
 /*******************************************************
@@ -32,23 +31,21 @@ int WhichEndian()
 int WhichEndian2()
 {
     temp.a = 0x1122;
-    if(temp.b == 0x11) 
-	return 1;
+    if (temp.b == 0x11)
+        return 1;
     else
-	return 0;
+        return 0;
 }
-
 
 void main(int argc, char *argv[])
 {
-    if(WhichEndian())
-	printf("big endian\n");
+    if (WhichEndian())
+        printf("big endian\n");
     else
-	printf("little endian\n");
+        printf("little endian\n");
 
-
-    if(WhichEndian2())
-	printf("big endian\n");
+    if (WhichEndian2())
+        printf("big endian\n");
     else
-	printf("little endian\n");
+        printf("little endian\n");
 }

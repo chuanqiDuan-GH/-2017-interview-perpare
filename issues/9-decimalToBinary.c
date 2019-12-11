@@ -14,19 +14,19 @@ int digit = 0;
 
 void DecimalToBinary(int deNum, int *arr)
 {
-    if(NULL == arr) 
-	return;
+    if (NULL == arr)
+        return;
 
-    if(deNum == 0)
+    if (deNum == 0)
     {
-	arr[0] = 0;
-	return;
+        arr[0] = 0;
+        return;
     }
 
-    while(deNum/2)
+    while (deNum / 2)
     {
-	arr[digit++] = deNum % 2;
-	deNum /= 2;
+        arr[digit++] = deNum % 2;
+        deNum /= 2;
     }
     arr[digit] = 1;
 }
@@ -41,8 +41,8 @@ int main()
 
     do
     {
-	printf("%d ", arr[digit]); 
-    }while(digit--);
+        printf("%d ", arr[digit]);
+    } while (digit--);
 
     return 0;
 }

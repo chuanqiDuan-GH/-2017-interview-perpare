@@ -15,17 +15,15 @@ int FindSingleNum(int arr[], int len)
 {
     int ret = 0;
     int i;
-    for(i=0; i<len; i++){
-	ret ^= arr[i]; 
+    for (i = 0; i < len; i++)
+    {
+        ret ^= arr[i];
     }
     return ret;
 }
-
 
 void main()
 {
     int arr[ARRLEN] = {1, 2, 3, 2, 1, 5, 6, 5, 6};
     printf("%d\n", FindSingleNum(arr, ARRLEN));
 }
-
-

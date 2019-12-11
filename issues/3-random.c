@@ -14,15 +14,15 @@
 int MyRandom(int low, int up)
 {
     int ret;
-    ret = rand()%up+low; 
+    ret = rand() % up + low;
     return ret;
 }
 
 int main()
 {
     srand((unsigned)time(NULL));
-    printf("%d\n", MyRandom(1, 5)); 
-    printf("%d\n", MyRandom(1, 5)); 
-    printf("%d\n", MyRandom(1, 5)); 
+    printf("%d\n", MyRandom(1, 5));
+    printf("%d\n", MyRandom(1, 5));
+    printf("%d\n", MyRandom(1, 5));
     return 0;
 }

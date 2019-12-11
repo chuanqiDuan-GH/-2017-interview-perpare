@@ -11,27 +11,27 @@
 
 int main()
 {
-    int i=0, j=0, q=0;
+    int i = 0, j = 0, q = 0;
     /*1 2 3 4能够组成的所有符合提议的三位数*/
-    for(i=1; i<5; i++)
+    for (i = 1; i < 5; i++)
     {
-	//保证数字不复用
-	if(i==j || i==q)
-	    continue;
-	
-	for(j=1; j<5; j++)
-	{
-	    if(j==i || j==q)
-		continue;
+        //保证数字不复用
+        if (i == j || i == q)
+            continue;
 
-	    for(q=1; q<5; q++)
-	    {
-		if(q==i || q==j)
-		    continue;
+        for (j = 1; j < 5; j++)
+        {
+            if (j == i || j == q)
+                continue;
 
-		printf("%d%d%d\n", i, j, q); 
-	    }
-	}
+            for (q = 1; q < 5; q++)
+            {
+                if (q == i || q == j)
+                    continue;
+
+                printf("%d%d%d\n", i, j, q);
+            }
+        }
     }
     return 0;
 }
