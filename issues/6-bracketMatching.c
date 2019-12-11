@@ -26,8 +26,11 @@ int top = STACKSIZE;
 //入栈
 void Push(char symbol)
 {
-    top--;
-    stack[top] = symbol;
+    if (top > 0)
+    {
+        top--;
+        stack[top] = symbol;
+    }
 }
 
 //出栈
@@ -40,7 +43,6 @@ char Pop()
         tmp = stack[top];
         top++;
     }
-
     return tmp;
 }
 
