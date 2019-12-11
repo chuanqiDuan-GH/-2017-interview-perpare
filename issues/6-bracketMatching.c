@@ -33,8 +33,13 @@ void Push(char symbol)
 //出栈
 char Pop()
 {
-    char tmp = stack[top];
-    top++;
+    char tmp = '#';
+    //处理出栈多于入栈场景(栈顶已弹出)
+    if (top < STACKSIZE)
+    {
+        tmp = stack[top];
+        top++;
+    }
 
     return tmp;
 }
@@ -56,30 +61,46 @@ int IsMatching(char *str)
         {
 #ifdef RULE1
             tmp = Pop();
-            //printf("%c\n", tmp);
-            i++;
             if (tmp == '(' || tmp == '{' || tmp == '[')
+            {
+                i++;
                 continue;
+            }
 #endif
 
 #ifdef RULE2
             tmp = Pop();
             if (str[i] == ')' && tmp == '(')
+            {
+                i++;
                 continue;
+            }
             else if (str[i] == '}' && tmp == '{')
+            {
+                i++;
                 continue;
+            }
             else if (str[i] == ']' && tmp == '[')
+            {
+                i++;
                 continue;
+            }
 #endif
             return 0;
         }
+    }
+
+    //处理出栈少于入站场景(栈内有遗留)
+    if (top != STACKSIZE)
+    {
+        return 0; 
     }
     return 1;
 }
 
 int main()
 {
-    char str[10] = "{([)]}";
+    char str[10] = "{([]})";
 
     if (IsMatching(str))
     {
