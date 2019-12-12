@@ -18,58 +18,120 @@ typedef struct ListNode
     struct ListNode *pNext;
 } Node, *pNode;
 
-pNode AddList(LISTTYPE value, pNode head)
+//增加节点
+void AddList(LISTTYPE value, pNode *head)
 {
+    if (NULL == (*head))
+    {
+        *head = (pNode)malloc(sizeof(Node));
+        (*head)->value = value;
+        (*head)->pNext = NULL;
+        return;
+    }
     pNode new = (pNode)malloc(sizeof(Node));
     if (NULL == new)
-        return NULL;
+    {
+        return;
+    }
     new->value = value;
     new->pNext = NULL;
 
-    if (NULL == head)
-        head = new;
+    if (NULL == (*head))
+    {
+        *head = new;
+    }
     else
     {
-        new->pNext = head->pNext;
-        head->pNext = new;
+        /*
+        //头插入
+        new->pNext = (*head)->pNext;
+        (*head)->pNext = new;
+        */
+
+        //尾插入
+        pNode tmp = *head;
+        while (NULL != tmp->pNext)
+        {    
+            tmp = tmp->pNext; 
+        }
+        tmp->pNext = new; 
     }
-    return head;
 }
 
+//反转
 pNode Reverse(pNode head)
 {
     if (NULL == head)
+    {
         return head;
+    }
 
     pNode tmp = head->pNext;
     pNode rear = head;
-    pNode front = NULL;
+    pNode front = tmp;
     head->pNext = NULL;
 
-    while (tmp)
+    while (NULL != tmp)
     {
-        front = tmp;
         tmp = tmp->pNext;
         front->pNext = rear;
         rear = front;
+        front = tmp;
     }
-    head = rear;
-    return head;
+    return rear;
 }
 
-int main()
+//展示数据
+void ShowList(pNode head)
 {
-    pNode head = NULL;
-    head = AddList(1, head);
-    head = AddList(2, head);
-    head = AddList(3, head);
-    head = AddList(4, head);
+    if (NULL == head)
+    {
+        return; 
+    }
 
-    pNode tmp = Reverse(head);
+    pNode tmp = head;
     while (tmp)
     {
         printf("%d\n", tmp->value);
         tmp = tmp->pNext;
     }
+}
+
+//释放内存
+void FreeList(pNode *head)
+{
+    if (NULL == (*head))
+    {
+        return; 
+    }
+
+    pNode tmp = (*head)->pNext;
+    pNode del = *head;
+
+    while (NULL != del)
+    {
+        free(del); 
+        del = tmp;
+        if (NULL != tmp)
+        {
+            tmp = tmp->pNext;
+        }
+    }
+}
+
+int main()
+{
+    pNode head = NULL;
+    AddList(1, &head);
+    AddList(2, &head);
+    AddList(3, &head);
+    AddList(4, &head);
+    ShowList(head);
+
+    //反转后的链表
+    pNode rear = Reverse(head);
+    ShowList(rear);
+
+    FreeList(&rear);
     return 0;
 }
