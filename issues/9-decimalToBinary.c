@@ -8,41 +8,50 @@
  *   Describe:十进制转换二进制
  ********************************************************/
 #include <stdio.h>
+#include <stdlib.h>
 
 #define BINARYSIZE 32
-int digit = 0;
 
 void DecimalToBinary(int deNum, int *arr)
 {
     if (NULL == arr)
         return;
 
-    if (deNum == 0)
+    int digit = 0;
+
+    int rDeNum = abs(deNum);
+
+    while (rDeNum)
     {
-        arr[0] = 0;
-        return;
+        arr[digit] = rDeNum % 2;
+
+/*
+        if (deNum < 0)
+        {
+            arr[digit] = ~arr[digit];
+        }
+*/
+        digit++;
+        rDeNum /= 2;
     }
 
-    while (deNum / 2)
+    do
     {
-        arr[digit++] = deNum % 2;
-        deNum /= 2;
-    }
-    arr[digit] = 1;
+        printf("%d ", arr[--digit]);
+    } while (digit);
 }
 
 int main()
 {
-    int arr[BINARYSIZE] = {'\0'};
+    int arr[BINARYSIZE] = {0};
     int input;
-    scanf("%d", &input);
+
+    if (EOF == scanf("%d", &input))
+    {
+        printf("scanf err\n");
+        return -1;    
+    }
 
     DecimalToBinary(input, arr);
-
-    do
-    {
-        printf("%d ", arr[digit]);
-    } while (digit--);
-
     return 0;
 }
