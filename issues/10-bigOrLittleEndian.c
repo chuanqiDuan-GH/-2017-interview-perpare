@@ -1,11 +1,11 @@
 /********************************************************
  *   Copyright (C) 2017 All rights reserved.
- *   
+ *
  *   Filename:10-bigOrLittleEndian.c
  *   Author  :Chuanqi.Duan
  *   Email   :chuanqiduan@foxmail.com
  *   Date    :2017-02-23 17:37
- *   Describe:验证大小端
+ *   Describe:验证大小端(高尾端/低尾端)
  ********************************************************/
 #include <stdio.h>
 
@@ -14,38 +14,41 @@ union temp {
     char b;
 } temp;
 
-int WhichEndian()
+
+void WhichEndian()
 {
-    short int a = 0x1122; //十六进制，一个数值占4位
-    char b = *(char *)&a; //通过将short(2字节)强制类型转换成char单字节，b指向的起始字节(低字节)
-    if (b == 0x11)        //低字节存的是数据的高字节数据
-        return 1;         //大端模式
+    short int a = 1;
+    char b = *(char *)&a;
+    if (b == 1) //低地址存储的数据(低地址是否存储字节尾端)
+    {
+        printf("little endian\n");
+    }
     else
-        return 0; //小端模式
+    {
+        printf("big endian\n");
+    }
 }
 
 /*******************************************************
-联合体union的存放顺序是所有成员都从低地址开始存放，
-而且所有成员共享存储空间
-********************************************************/
-int WhichEndian2()
+  联合体union的存放顺序是所有成员都从低地址开始存放，
+  而且所有成员共享存储空间
+ ********************************************************/
+void WhichEndianI()
 {
-    temp.a = 0x1122;
-    if (temp.b == 0x11)
-        return 1;
+    temp.a = 0x1122;//0x11字节头端,0x22字节尾端
+    if (temp.b == 0x11) //低地址是否存储字节头端
+    {
+        printf("big endian\n");
+    }
     else
-        return 0;
+    {
+        printf("little endian\n");
+    }
 }
 
-void main(int argc, char *argv[])
+int main()
 {
-    if (WhichEndian())
-        printf("big endian\n");
-    else
-        printf("little endian\n");
-
-    if (WhichEndian2())
-        printf("big endian\n");
-    else
-        printf("little endian\n");
+    WhichEndian();
+    WhichEndianI();
+    return 0;
 }
