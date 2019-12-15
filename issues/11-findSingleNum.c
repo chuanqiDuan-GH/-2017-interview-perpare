@@ -11,6 +11,7 @@
 
 #define ARRLEN 9
 
+//一个数异或自身,结果为0
 int FindSingleNum(int arr[], int len)
 {
     int ret = 0;
@@ -22,8 +23,10 @@ int FindSingleNum(int arr[], int len)
     return ret;
 }
 
-void main()
+int main()
 {
     int arr[ARRLEN] = {1, 2, 3, 2, 1, 5, 6, 5, 6};
     printf("%d\n", FindSingleNum(arr, ARRLEN));
+
+    return 0;
 }
