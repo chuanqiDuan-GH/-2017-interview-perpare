@@ -6,10 +6,21 @@
 #include <string.h>
 #include <time.h>
 
-#define TRUE 1
-#define FALSE 0
-#define SIZE 11
+#define QUEUE_ASSERT(q) \
+    do {\
+        if (q == NULL)\
+        {\
+            return E_ERR;\
+        }\
+    } while (0)
+#define SIZE 10
+
 static int keyNum = 0;
+enum _ret
+{
+    E_OK,
+    E_ERR
+};
 
 char *keyPool[32] =
     {
@@ -22,12 +33,12 @@ char *keyPool[32] =
         "VOLUME_UP",
         "VOLUME_DOWN"};
 
-typedef int QueueData;
 typedef struct _queue //队列结构体
 {
     char *key[SIZE];
     int front; // 指向队头的下标
     int rear;  // 指向队尾的下标
+    int capacity; //队列容量
 } Queue;
 
 struct data //信号量结构体
@@ -43,70 +54,71 @@ struct data sem;
 
 int InitQueue(Queue *q) // 队列初始化
 {
-    if (q == NULL)
-    {
-        return FALSE;
-    }
+    QUEUE_ASSERT(q);
 
     q->front = 0;
     q->rear = 0;
+    q->capacity = 0;
 
-    return TRUE;
+    return E_OK;
 }
 
 int QueueEmpty(Queue *q) //判断空对情况
 {
-    if (q == NULL)
-    {
-        return FALSE;
-    }
+    QUEUE_ASSERT(q);
 
-    return q->front == q->rear;
+    if (q->capacity == 0)
+    {
+        return E_OK; 
+    }
+    return E_ERR;
 }
 
 int QueueFull(Queue *q) //判断队满的情况
 {
-    if (q == NULL)
-    {
-        return FALSE;
-    }
+    QUEUE_ASSERT(q);
 
-    return q->front == (q->rear + 1) % SIZE;
+    if (q->capacity == SIZE)
+    {
+        return E_OK; 
+    }
+    return E_ERR;
 }
 
 int DeQueue(Queue *q, char **key) //出队函数
 {
-    if (q == NULL)
-    {
-        return FALSE;
-    }
+    QUEUE_ASSERT(q);
 
     if (QueueEmpty(q))
     {
-        return FALSE;
+        printf("queue is empty\n");
+        return E_ERR;
     }
-    q->front = (q->front + 1) % SIZE;
-    *key = q->key[q->front];
 
-    return TRUE;
+    q->front = q->front % SIZE;
+    *key = q->key[q->front];
+    (q->front)++;
+    (q->capacity)--;
+
+    return E_OK;
 }
 
 int EnQueue(Queue *q, char *key) //进队函数
 {
-    if (q == NULL)
-    {
-        return FALSE;
-    }
+    QUEUE_ASSERT(q);
 
     if (QueueFull(q))
     {
-        return FALSE;
+        printf("queue is full\n");
+        return E_ERR;
     }
 
-    q->rear = (q->rear + 1) % SIZE;
+    q->rear = q->rear % SIZE;
     q->key[q->rear] = key;
+    (q->rear)++;
+    (q->capacity)++;
 
-    return TRUE;
+    return E_OK;
 }
 
 void *Producer()
@@ -115,12 +127,19 @@ void *Producer()
     {
         int time = rand() % 10 + 1; //随机使程序睡眠0点几秒
         usleep(time * 100000);
-        num = rand() % 7;
+        num = rand() % 8;
 
         sem_wait(&sem.empty);       //信号量的P操作
         pthread_mutex_lock(&mutex); //互斥锁上锁
 
-        EnQueue(&(sem.q), keyPool[num]); //消息进队
+        //消息进队
+        if (EnQueue(&(sem.q), keyPool[num]))
+        {
+            printf("EnQueue err\n");  
+            pthread_mutex_unlock(&mutex); //互斥锁解锁
+            sem_post(&sem.full);          //信号量的V操作
+            break;
+        }
         printf("生产了一条消息：%s\n", keyPool[num]);
 
         pthread_mutex_unlock(&mutex); //互斥锁解锁
@@ -148,7 +167,7 @@ void *Consumer()
         pthread_mutex_unlock(&mutex); //互斥锁解锁
         sem_post(&sem.empty);         //信号量的V操作
 
-        if (10 == keyNum && 1 == QueueEmpty(&sem.q))
+        if (1 == QueueEmpty(&sem.q))
         {
             break;
         }

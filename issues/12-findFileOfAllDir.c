@@ -31,7 +31,6 @@ void Traverse(char *sourceFilePath)
         }
         else if (ptr->d_type == DT_DIR)
         {
-            printf("dir:%s\n", ptr->d_name);
             Traverse(ptr->d_name);
         }
     }
