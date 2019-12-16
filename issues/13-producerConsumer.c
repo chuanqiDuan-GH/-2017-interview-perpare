@@ -69,9 +69,9 @@ int QueueEmpty(Queue *q) //判断空对情况
 
     if (q->capacity == 0)
     {
-        return E_OK; 
+        return E_ERR; 
     }
-    return E_ERR;
+    return E_OK;
 }
 
 int QueueFull(Queue *q) //判断队满的情况
@@ -80,9 +80,9 @@ int QueueFull(Queue *q) //判断队满的情况
 
     if (q->capacity == SIZE)
     {
-        return E_OK; 
+        return E_ERR; 
     }
-    return E_ERR;
+    return E_OK;
 }
 
 int DeQueue(Queue *q, char **key) //出队函数
@@ -167,7 +167,7 @@ void *Consumer()
         pthread_mutex_unlock(&mutex); //互斥锁解锁
         sem_post(&sem.empty);         //信号量的V操作
 
-        if (1 == QueueEmpty(&sem.q))
+        if (keyNum == 10 && QueueEmpty(&sem.q)) //测试用逻辑,保证预期生产10条消息,并消费10条,实际实现中不需要
         {
             break;
         }
