@@ -1,6 +1,14 @@
 #include <stdio.h>
-#include "sort_algroithm.h"
+#include "sort_algorithm.h"
 
+
+int RandomNum(int lower, int upper)
+{
+    int num = 0;
+    num = rand() % upper + lower;
+    printf("%s : %d\n", __FUNCTION__, num);
+    return num;
+}
 
 void ShowArr(int *arr, const unsigned int len)
 {
@@ -17,17 +25,32 @@ void ShowArr(int *arr, const unsigned int len)
     printf("\n");
 }
 
+void ImputDataToArr(int *arr)
+{
+    if (NULL == arr) {
+        printf("arr is null\n");
+        return;
+    }
+
+    for (int i = 0; i < ARR_LEN; i++) {
+        arr[i] = RandomNum(LOWER, UPPER);
+    }
+}
+
 int main()
 {
-    int arr[5] = {91, 19, 15, 10, 0};
-    unsigned int len = sizeof(arr)/sizeof(int);
+    srand((unsigned)time(NULL));
+
+    int arr[ARR_LEN] = { 0 };
+    ImputDataToArr(arr);
+    ShowArr(arr, ARR_LEN);
 
     //BubSort(arr, len);
     //QuiSort(arr, 0, len - 1);
     //InsSort(arr, len);
     //SheSort(arr, len);
-    //SelSort(arr, len);
-    MergeSort(arr, 0, len - 1);
+    //SelSort(arr, ARR_LEN);
+    MergeSort(arr, 0, ARR_LEN - 1);
 
-    ShowArr(arr, sizeof(arr)/sizeof(int));
+    ShowArr(arr, ARR_LEN);
 }

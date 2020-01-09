@@ -167,7 +167,7 @@ void Merge(int *arr, int low, int mid, int high)
         arrT[p++] = arr[i++];
     }
 
-    while (j <= (mid + 1)) {
+    while (j <= high) {
         arrT[p++] = arr[j++];
     }
 
