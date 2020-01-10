@@ -69,7 +69,7 @@ void QuiSort(int *arr, int left, int right)
     return;
 }
 
-void InsSort(int *arr, const unsigned int len)
+void InsSort(int *arr, int len)
 {
     if (NULL == arr || len <= 1) {
         return;
@@ -175,6 +175,8 @@ void Merge(int *arr, int low, int mid, int high)
     for (i = low, p = 0; i <= high; i++, p++) {
         arr[i] = arrT[p];
     }
+
+    free(arrT);
 }
 
 void MergeSort(int *arr, int low, int high)
