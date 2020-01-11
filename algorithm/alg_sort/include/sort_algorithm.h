@@ -13,5 +13,6 @@ void QuiSort(int *arr, unsigned int left, unsigned int right);
 void SheSort(int *arr, const int len);
 void SelSort(int *arr, const int len);
 void MergeSort(int *arr, int low, int high);
+void HeapSort(int *arr, int len);
 
 #endif // __SORT_ALGORITHM_H__

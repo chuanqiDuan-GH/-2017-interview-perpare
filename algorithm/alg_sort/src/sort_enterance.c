@@ -45,12 +45,13 @@ int main()
     ImputDataToArr(arr);
     ShowArr(arr, ARR_LEN);
 
-    //BubSort(arr, len);
-    //QuiSort(arr, 0, len - 1);
-    //InsSort(arr, len);
-    //SheSort(arr, len);
+    //BubSort(arr, ARR_LEN);
+    //QuiSort(arr, 0,  ARR_LEN - 1);
+    //InsSort(arr, ARR_LEN);
+    //SheSort(arr, ARR_LEN);
     //SelSort(arr, ARR_LEN);
-    MergeSort(arr, 0, ARR_LEN - 1);
+    //MergeSort(arr, 0, ARR_LEN - 1);
+    HeapSort(arr, ARR_LEN);
 
     ShowArr(arr, ARR_LEN);
 }

@@ -193,3 +193,65 @@ void MergeSort(int *arr, int low, int high)
         Merge(arr, low, mid, high);
     }
 }
+
+void SiftDown(int *arr, int mid, int len)
+{
+    if (NULL == arr || len <= 1) {
+        return;
+    }
+    
+    int leftChild = 2 * mid + 1;
+    int rightChild = 2 * mid + 2;
+    int present = mid;
+
+    if (leftChild < len && arr[leftChild] > arr[present]) {
+        present = leftChild;
+    }
+
+    if (rightChild < len && arr[rightChild] > arr[present]) {
+        present = rightChild;
+    }
+
+    if (present != mid) {
+        int tmp = arr[mid];
+        arr[mid] = arr[present];
+        arr[present] = tmp;
+
+        //不断的下沉处理,直到无子节点
+        SiftDown(arr, present, len);
+    }
+}
+
+void BuildHeap(int *arr, int len)
+{
+    if (NULL == arr || len <= 1) {
+        printf("params err\n");
+        return;
+    }
+
+    for (int idx = len / 2; idx >= 0; idx--) {
+        SiftDown(arr, idx, len);
+    }
+}
+
+//最大堆(升序)
+void HeapSort(int *arr, int len)
+{
+    if (NULL == arr || len <= 1) {
+        printf("params err\n");
+        return;
+    }
+    //堆化数组
+    BuildHeap(arr, len);
+
+    //取出堆头节点,放置到数组尾部,数组长度减一,继续下沉处理
+    for (int idx = len - 1; idx > 0; idx--) {
+        int tmpValue = arr[idx];
+        arr[idx] = arr[0];
+        arr[0] = tmpValue;
+
+        len--;
+
+        SiftDown(arr, 0, len);
+    }
+}
