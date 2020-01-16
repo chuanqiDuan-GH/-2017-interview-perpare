@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "common.h"
 
 void BubSort(int *arr, const unsigned int len) 
@@ -254,4 +255,63 @@ void HeapSort(int *arr, int len)
 
         SiftDown(arr, 0, len);
     }
+}
+
+int FindMax(int *arr, int len)
+{
+    if (NULL == arr || len < 0) {
+        printf("params err\n");
+        return -1;
+    }
+    int maxRet = 0;
+
+    for (int idx = 0; idx < len; idx++) {
+        if (arr[idx] > maxRet) {
+            maxRet = arr[idx];
+        }
+    }
+
+    return maxRet;
+}
+
+void CountingSort(int *arr, int len)
+{
+    if (NULL == arr || len < 0) {
+        printf("params err\n");
+        return;
+    }
+
+    //寻找最大值
+    int maxValue = FindMax(arr, len);
+    if (maxValue < 0) {
+        printf("find max num err\n");
+        return;
+    }
+
+    //申请计数数组空间
+    int lenT = maxValue + 1;
+    int *arrT = (int *)malloc(lenT * sizeof(int));
+    if (NULL == arrT) {
+        printf("malloc fail\n");
+        return;
+    }
+    memset(arrT, 0, lenT * sizeof(int));
+
+    //根据源数组计数
+    int idx = 0;
+    for (; idx < len; idx++) {
+        arrT[arr[idx]]++;
+    }
+
+    //读取计数数组并逐个赋值到源数组
+    for (int idxT = 0, idx = 0; idxT < lenT; idxT++) {
+        if (arrT[idxT] > 0) {
+            while (arrT[idxT]--) {
+                arr[idx++]  = idxT;
+            }
+        }
+    }
+
+    free(arrT);
+    arrT = NULL;
 }
