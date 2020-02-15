@@ -52,7 +52,8 @@ int main()
     //SelSort(arr, ARR_LEN);
     //MergeSort(arr, 0, ARR_LEN - 1);
     //HeapSort(arr, ARR_LEN);
-    CountingSort(arr, ARR_LEN);
+    //CountingSort(arr, ARR_LEN);
+    BucketSort(arr, ARR_LEN);
 
     ShowArr(arr, ARR_LEN);
 }

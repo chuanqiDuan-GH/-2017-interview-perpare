@@ -5,7 +5,7 @@
 
 void BubSort(int *arr, const unsigned int len) 
 {
-    if (NULL == arr || len <= 0) {
+    if (NULL == arr || len <= 1) {
         return;
     }
 
@@ -257,22 +257,22 @@ void HeapSort(int *arr, int len)
     }
 }
 
-int FindMaxAndMin(int *arr, int len, int *maxRet, int *minRet)
+int FindMaxAndMin(int *arr, int len, int *maxNum, int *minNum)
 {
     if (NULL == arr || len < 0) {
         printf("params err\n");
         return -1;
     }
-    *maxRet = arr[0];
-    *minRet = arr[0];
+    *maxNum = arr[0];
+    *minNum = arr[0];
 
     for (int idx = 0; idx < len; idx++) {
-        if (arr[idx] > *maxRet) {
-            *maxRet = arr[idx];
+        if (arr[idx] > *maxNum) {
+            *maxNum = arr[idx];
         }
 
-        if (arr[idx] < *minRet) {
-            *minRet = arr[idx];
+        if (arr[idx] < *minNum) {
+            *minNum = arr[idx];
         }
     }
     return 0;
@@ -320,4 +320,69 @@ void CountingSort(int *arr, int len)
 
     free(arrT);
     arrT = NULL;
+}
+
+void BucketSort(int *arr, int len)
+{
+    if (NULL == arr || len <= 1) {
+        return; 
+    }
+
+    int maxNum = 0;
+    int minNum = 0;
+
+    //取得待排序集合的最大以及最小元素    
+    int ret = FindMaxAndMin(arr, len, &maxNum, &minNum);
+    if (ret < 0) {
+        return;
+    }
+
+    //计算桶数量
+    int bucketNum = (maxNum - minNum) / BUCKET_STEP + 1;
+    if (bucketNum == 1) {
+        printf("no need to sort data\n");
+        return;
+    }
+    
+    //申请空间存储实际所需桶内存
+    int (*bucket)[10] = (int (*)[10])malloc(bucketNum * BUCKET_STEP * sizeof(int));
+    if (NULL == bucket) {
+        printf("malloc fail\n");
+        return;
+    }
+    memset(bucket, 0, bucketNum * BUCKET_STEP * sizeof(int));
+
+    //申请空间记录每个桶中实际存储元素个数
+    int *bucketLenSet = (int *)malloc(bucketNum * sizeof(int));
+    if (NULL == bucketLenSet) {
+        printf("malloc fail\n");
+        return;
+    }
+    memset(bucketLenSet, 0, bucketNum * sizeof(int));
+
+    //将待排序集合中的元素存储到指定值域的桶中
+    int idx = 0;
+    for (; idx < len; idx++) {
+        int bn = (arr[idx] - minNum) / BUCKET_STEP;
+        bucket[bn][bucketLenSet[bn]++] = arr[idx];
+    }
+
+    //依次遍历各个桶,并对其进行排序
+    idx = 0;
+    for (int bucketNumIdx = 0; bucketNumIdx < bucketNum; bucketNumIdx++) {
+        if (bucketLenSet[bucketNumIdx]) {
+
+            //使用选择排序处理各个桶中的数据
+            SelSort(bucket[bucketNumIdx], bucketLenSet[bucketNumIdx]);         
+
+            //最终将各个桶中排序后的元素重新赋值到源数组中
+            for (int bucketIdx = 0; bucketIdx < bucketLenSet[bucketNumIdx]; bucketIdx++) {
+                arr[idx++] = bucket[bucketNumIdx][bucketIdx];
+            }
+        }
+    }
+
+    //释放手动申请的内存
+    free(bucketLenSet);
+    free(bucket);
 }

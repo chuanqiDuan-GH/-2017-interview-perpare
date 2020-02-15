@@ -15,5 +15,6 @@ void SelSort(int *arr, const int len);
 void MergeSort(int *arr, int low, int high);
 void HeapSort(int *arr, int len);
 void CountingSort(int *arr, int len);
+void BucketSort(int *arr, int len);
 
 #endif // __SORT_ALGORITHM_H__
