@@ -4,7 +4,8 @@ SrcFiles=$(wildcard ../src/*.c)
 #使用替换函数获取.o文件
 ObjFiles=$(patsubst %.c,%.o,$(SrcFiles))
 
-CFLAG=-Wall -W -fsanitize=address -fno-omit-frame-pointer -O1
+#CFLAG=-Wall -W -fsanitize=address -fno-omit-frame-pointer -O1
+CFLAG=-Wall -W -fsanitize=address -fno-omit-frame-pointer -O0
 
 #生成的可执行文件
 all:alg
