@@ -133,7 +133,7 @@ void SelSort(int *arr, const int len)
     
     for (oIdx = 0; oIdx < len; oIdx++) {
         saveIdx = oIdx;
-        for (iIdx = oIdx; iIdx < len; iIdx++) {
+        for (iIdx = oIdx + 1; iIdx < len; iIdx++) {
             if (arr[iIdx] < arr[saveIdx]) {
                 saveIdx = iIdx;
             }
@@ -257,21 +257,25 @@ void HeapSort(int *arr, int len)
     }
 }
 
-int FindMax(int *arr, int len)
+int FindMaxAndMin(int *arr, int len, int *maxRet, int *minRet)
 {
     if (NULL == arr || len < 0) {
         printf("params err\n");
         return -1;
     }
-    int maxRet = 0;
+    *maxRet = arr[0];
+    *minRet = arr[0];
 
     for (int idx = 0; idx < len; idx++) {
-        if (arr[idx] > maxRet) {
-            maxRet = arr[idx];
+        if (arr[idx] > *maxRet) {
+            *maxRet = arr[idx];
+        }
+
+        if (arr[idx] < *minRet) {
+            *minRet = arr[idx];
         }
     }
-
-    return maxRet;
+    return 0;
 }
 
 void CountingSort(int *arr, int len)
@@ -281,15 +285,17 @@ void CountingSort(int *arr, int len)
         return;
     }
 
-    //寻找最大值
-    int maxValue = FindMax(arr, len);
-    if (maxValue < 0) {
-        printf("find max num err\n");
+    int max = 0;
+    int min = 0;
+
+    int ret = FindMaxAndMin(arr, len, &max, &min);
+    if (ret < 0) {
+        printf("find max or min num err\n");
         return;
     }
 
     //申请计数数组空间
-    int lenT = maxValue + 1;
+    int lenT = max + 1;
     int *arrT = (int *)malloc(lenT * sizeof(int));
     if (NULL == arrT) {
         printf("malloc fail\n");
@@ -304,7 +310,7 @@ void CountingSort(int *arr, int len)
     }
 
     //读取计数数组并逐个赋值到源数组
-    for (int idxT = 0, idx = 0; idxT < lenT; idxT++) {
+    for (int idxT = min, idx = 0; idxT <= max; idxT++) {
         if (arrT[idxT] > 0) {
             while (arrT[idxT]--) {
                 arr[idx++]  = idxT;
