@@ -178,6 +178,7 @@ void Merge(int *arr, int low, int mid, int high)
     }
 
     free(arrT);
+    arrT = NULL;
 }
 
 void MergeSort(int *arr, int low, int high)
@@ -384,5 +385,8 @@ void BucketSort(int *arr, int len)
 
     //释放手动申请的内存
     free(bucketLenSet);
+    bucketLenSet = NULL;
+
     free(bucket);
+    bucket = NULL;
 }
