@@ -10,4 +10,6 @@
 
 #define BUCKET_STEP 10  //桶排序的值域间隔
 
+#define RADIX_STEP 10	//基数排序的排序区间
+
 #endif // __COMMON_H__

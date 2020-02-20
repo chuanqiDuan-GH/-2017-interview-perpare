@@ -390,3 +390,76 @@ void BucketSort(int *arr, int len)
     free(bucket);
     bucket = NULL;
 }
+
+/*
+ * 对数组按照"某个位数"进行排序(桶排序)
+ *
+ * 参数说明：
+ *     a -- 数组
+ *     n -- 数组长度
+ *     exp -- 指数。对数组a按照该指数进行排序。
+ *
+ * 例如，对于数组a={50, 3, 542, 745, 2014, 154, 63, 616}；
+ *    (01) 当exp=1表示按照"个位"对数组a进行排序
+ *    (02) 当exp=10表示按照"十位"对数组a进行排序
+ *    (03) 当exp=100表示按照"百位"对数组a进行排序
+ *    ...
+ */
+void DoRadix(int *arr, int len, int exp)
+{
+    if (NULL == arr || len <= 1 || exp < 0) {
+        printf("params err\n"); 
+        return;
+    }
+
+    int arrTmp[len];    //按某一位存放排序的临时数组
+    int bucket[RADIX_STEP] = { 0 }; //记录某一位存放待排序元素的数量
+    int idx = 0;
+
+    memset(arrTmp, 0, len * sizeof(int));
+
+    //将数据出现的次数存储在bucket[]中
+    for (; idx < len; idx++) {
+        bucket[(arr[idx] / exp) % RADIX_STEP]++; 
+    }
+
+    //更改buckets[i]。目的是让更改后的bucket[i]的值，是该数据在arrTmp[]中的位置
+    for (idx = 1; idx < RADIX_STEP; idx++) {
+        bucket[idx] += bucket[idx - 1];
+    }
+
+    //将数据存储到临时数组arrTmp[]中
+    for (idx = len - 1; idx >= 0; idx--) {
+        arrTmp[bucket[(arr[idx] / exp) % RADIX_STEP] - 1] = arr[idx];
+        bucket[(arr[idx] / exp) % RADIX_STEP]--;
+    }
+
+    //将排序好的数据赋值给arrp[]
+    for (idx = 0; idx < 10; idx++) {
+        arr[idx] = arrTmp[idx];
+    }
+}
+
+
+void RadixSort(int *arr, int len)
+{
+    if (NULL == arr || len <= 1) {
+        printf("params err\n");
+        return;
+    }
+
+    int max = 0;
+    int min = 0;
+    int exp = 1;    // 指数。当对数组按各位进行排序时，exp=1；按十位进行排序时，exp=10；...
+
+    int ret = FindMaxAndMin(arr, len, &max, &min);
+    if (ret < 0) {
+        printf("find max or min num fail\n");
+        return; 
+    }
+
+    //找到最大数,并以最大数的位数控制循环次数
+    for (; max/exp > 0; exp *= 10) {
+        DoRadix(arr, len, exp); 
+    }
+}
